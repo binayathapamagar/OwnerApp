@@ -10,13 +10,11 @@ import {
   ActivityIndicator,
 } from 'react-native'
 
-import { auth } from '../config/FirebaseConfig'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import FirestoreController from '../controllers/FirestoreController'
+import FirebaseAuthController from '../controllers/FirebaseAuthController'
 
 const SignInScreen = ({ navigation }) => {
   //Properties
-  const firestoreController = FirestoreController.getInstance()
+  const firebaseAuthController = FirebaseAuthController.getInstance()
 
   // Hooks
   const [email, setEmail] = useState('')
@@ -37,7 +35,7 @@ const SignInScreen = ({ navigation }) => {
     }
 
     // Proceed with Firebase sign-in
-    const result = await firestoreController.signUserInWith(
+    const result = await firebaseAuthController.signUserInWith(
       email,
       password,
       setLoading
@@ -45,6 +43,8 @@ const SignInScreen = ({ navigation }) => {
 
     if (!result.success) {
       Alert.alert(result.message)
+    } else {
+      clearFields()
     }
   }
 
