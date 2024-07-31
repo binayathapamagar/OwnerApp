@@ -1,29 +1,31 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
+import React from 'react'
+import { StyleSheet, Text } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import Toast from 'react-native-toast-message'
 
 import SignInScreen from './screens/SignInScreen'
-
-import { NavigationContainer, StackActions } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-
-import Toast from 'react-native-toast-message'
-import CreateListingScreen from './screens/CreateListingScreen'
+import MainTabs from './MainTabs'
 
 const Stack = createNativeStackNavigator()
 
-export default function App() {
+const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Sign In"
-        screenOptions={() => ({
+        screenOptions={{
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
           headerTitleStyle: { fontWeight: 'bold' },
-        })}
+        }}
       >
         <Stack.Screen component={SignInScreen} name="Sign In" />
-        <Stack.Screen component={CreateListingScreen} name="Create a Listing" />
+        <Stack.Screen
+          component={MainTabs}
+          name="Main"
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
@@ -38,3 +40,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 })
+
+export default App

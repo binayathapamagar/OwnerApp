@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -11,19 +11,15 @@ import {
 } from 'react-native'
 
 import Toast from 'react-native-toast-message'
-
 import FirebaseAuthController from '../controllers/FirebaseAuthController'
 
 const SignInScreen = ({ navigation }) => {
-  //Properties
   const firebaseAuthController = FirebaseAuthController.getInstance()
 
-  // Hooks
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  // Functions
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
@@ -36,7 +32,6 @@ const SignInScreen = ({ navigation }) => {
       return
     }
 
-    // Proceed with Firebase sign-in
     const result = await firebaseAuthController.signUserInWith(
       email,
       password,
@@ -55,13 +50,13 @@ const SignInScreen = ({ navigation }) => {
         autoHide: true,
         bottomOffset: 40,
       })
-      navigateToCreateListingScreen()
+      navigateToMainScreen()
       clearFields()
     }
   }
 
-  const navigateToCreateListingScreen = () => {
-    navigation.navigate('Create a Listing')
+  const navigateToMainScreen = () => {
+    navigation.navigate('Main')
   }
 
   const fieldsValidationSuccess = () => {
@@ -96,7 +91,6 @@ const SignInScreen = ({ navigation }) => {
     setPassword('')
   }
 
-  // View
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
