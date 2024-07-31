@@ -18,4 +18,4 @@ class FirestoreController {
   }
 }
 
-export default FirebaseAuthController
+export default FirestoreController

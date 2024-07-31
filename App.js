@@ -6,6 +6,9 @@ import SignInScreen from './screens/SignInScreen'
 import { NavigationContainer, StackActions } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
+import Toast from 'react-native-toast-message'
+import CreateListingScreen from './screens/CreateListingScreen'
+
 const Stack = createNativeStackNavigator()
 
 export default function App() {
@@ -20,7 +23,9 @@ export default function App() {
         })}
       >
         <Stack.Screen component={SignInScreen} name="Sign In" />
+        <Stack.Screen component={CreateListingScreen} name="Create a Listing" />
       </Stack.Navigator>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
   )
 }

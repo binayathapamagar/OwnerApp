@@ -10,6 +10,8 @@ import {
   ActivityIndicator,
 } from 'react-native'
 
+import Toast from 'react-native-toast-message'
+
 import FirebaseAuthController from '../controllers/FirebaseAuthController'
 
 const SignInScreen = ({ navigation }) => {
@@ -44,8 +46,22 @@ const SignInScreen = ({ navigation }) => {
     if (!result.success) {
       Alert.alert(result.message)
     } else {
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Login Successful!',
+        text2: 'You have successfully logged in.',
+        visibilityTime: 3000,
+        autoHide: true,
+        bottomOffset: 40,
+      })
+      navigateToCreateListingScreen()
       clearFields()
     }
+  }
+
+  const navigateToCreateListingScreen = () => {
+    navigation.navigate('Create a Listing')
   }
 
   const fieldsValidationSuccess = () => {
