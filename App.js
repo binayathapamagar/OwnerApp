@@ -4,8 +4,9 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Toast from 'react-native-toast-message'
 
-import SignInScreen from './screens/SignInScreen'
 import MainTabs from './MainTabs'
+import SignInScreen from './screens/Auth/SignInScreen'
+import SignUpScreen from './screens/Auth/SignUpScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -21,6 +22,7 @@ const App = () => {
         }}
       >
         <Stack.Screen component={SignInScreen} name="Sign In" />
+        <Stack.Screen component={SignUpScreen} name="Sign Up" />
         <Stack.Screen
           component={MainTabs}
           name="Main"

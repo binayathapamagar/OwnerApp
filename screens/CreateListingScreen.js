@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from 'react'
 
 import ApiController from '../controllers/ApiController'
+
 const CreateListingScreen = () => {
   //Hooks
 
@@ -27,9 +28,7 @@ const CreateListingScreen = () => {
     try {
       const api = ApiController.getInstance()
       const data = await api.fetchVehiclesList(setLoading)
-      setVideos(data)
     } catch (err) {
-      setError(err.message)
       Alert.alert('Error', err.message)
     }
   }

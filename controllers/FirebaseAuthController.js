@@ -1,8 +1,11 @@
 import { auth } from '../config/FirebaseConfig'
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  createUserWithEmailAndPassword,
+} from 'firebase/auth'
 
 class FirebaseAuthController {
-  //Constructors
   constructor() {
     if (FirebaseAuthController.instance) {
       return FirebaseAuthController.instance
@@ -11,8 +14,7 @@ class FirebaseAuthController {
     FirebaseAuthController.instance = this
   }
 
-  //Static functions
-  static getInstance() {
+  static getInstance = () => {
     if (!FirebaseAuthController.instance) {
       FirebaseAuthController.instance = new FirebaseAuthController()
     }
@@ -20,8 +22,7 @@ class FirebaseAuthController {
     return FirebaseAuthController.instance
   }
 
-  //Firebase Auth methods
-  async signUserInWith(email, password, setLoading) {
+  signUserInWith = async (email, password, setLoading) => {
     try {
       setLoading(true)
       const userCredential = await signInWithEmailAndPassword(
@@ -46,22 +47,44 @@ class FirebaseAuthController {
     }
   }
 
-  async performLogout({ navigation }, setLoading) {
+  signUserUpWith = async (email, password, setLoading) => {
     try {
       setLoading(true)
-      await signOut(auth)
-      console.log(`Successfully signing the user out.`)
-      if (navigation.canGoBack()) {
-        navigation.dispatch(StackActions.popToTop)
-      }
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+      console.log(
+        `signUserUpWith: User created successfully: ${JSON.stringify(
+          userCredential
+        )}`
+      )
+      console.log(
+        `signUserUpWith: Account ${userCredential.user.email} created successfully`
+      )
+      return { success: true }
     } catch (err) {
-      console.log(`Error while signing the user out: ${err}`)
+      console.log(`signUserUpWith: Error creating the user : ${err}`)
+      return { success: false, message: err.message }
     } finally {
       setLoading(false)
     }
   }
 
-  //Other methods
+  performLogout = async (setLoading) => {
+    try {
+      setLoading(true)
+      await signOut(auth)
+      console.log(`Successfully signed the user out.`)
+      return { success: true }
+    } catch (err) {
+      console.log(`Error while signing the user out: ${err}`)
+      return { success: false, message: err.message }
+    } finally {
+      setLoading(false)
+    }
+  }
 }
 
 export default FirebaseAuthController

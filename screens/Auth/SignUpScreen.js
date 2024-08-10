@@ -11,57 +11,75 @@ import {
 } from 'react-native'
 
 import Toast from 'react-native-toast-message'
-import FirebaseAuthController from '../controllers/FirebaseAuthController'
+import FirebaseAuthController from '../../controllers/FirebaseAuthController'
 
-const SignInScreen = ({ navigation }) => {
+const SignUpScreen = ({ navigation }) => {
   const firebaseAuthController = FirebaseAuthController.getInstance()
 
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const validateName = (name) => {
+    return name.trim().length > 0
+  }
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
   }
 
-  const onSignInClicked = async () => {
-    console.log(`onSignInClicked function called....`)
+  const validatePhoneNumber = (phoneNumber) => {
+    const phoneRegex = /^[0-9]{10}$/
+    return phoneRegex.test(phoneNumber)
+  }
 
-    if (!fieldsValidationSuccess()) {
+  const validatePassword = (password) => {
+    return password.length >= 6
+  }
+
+  const onSignUpClicked = async () => {
+    if (!validateFields()) {
       return
     }
 
-    const result = await firebaseAuthController.signUserInWith(
+    console.log('onSignUpClicked function: creating a new account...')
+
+    const result = await firebaseAuthController.signUserUpWith(
       email,
       password,
       setLoading
     )
 
     if (!result.success) {
-      Alert.alert(result.message)
+      Alert.alert('Error', result.message)
     } else {
       Toast.show({
         type: 'success',
         position: 'bottom',
-        text1: 'Login Successful!',
-        text2: 'You have successfully logged in.',
+        text1: 'Success!',
+        text2: 'Signed up successfully.',
         visibilityTime: 3000,
         autoHide: true,
         bottomOffset: 40,
       })
-      navigateToMainScreen()
+      navigation.goBack()
       clearFields()
     }
   }
 
-  const navigateToMainScreen = () => {
-    navigation.navigate('Main')
-  }
+  const validateFields = () => {
+    if (!validateName(firstName)) {
+      Alert.alert('Validation Error', 'First Name is required')
+      return false
+    }
 
-  const fieldsValidationSuccess = () => {
-    if (!email) {
-      Alert.alert('Validation Error', 'Email is required')
+    if (!validateName(lastName)) {
+      Alert.alert('Validation Error', 'Last Name is required')
       return false
     }
 
@@ -70,12 +88,15 @@ const SignInScreen = ({ navigation }) => {
       return false
     }
 
-    if (!password) {
-      Alert.alert('Validation Error', 'Password is required')
+    if (!validatePhoneNumber(phoneNumber)) {
+      Alert.alert(
+        'Validation Error',
+        'Please enter a valid 10-digit Phone Number'
+      )
       return false
     }
 
-    if (password.length < 6) {
+    if (!validatePassword(password)) {
       Alert.alert(
         'Validation Error',
         'Password must be at least 6 characters long'
@@ -83,46 +104,81 @@ const SignInScreen = ({ navigation }) => {
       return false
     }
 
+    if (password !== confirmPassword) {
+      Alert.alert('Validation Error', 'Passwords do not match')
+      return false
+    }
+
     return true
   }
 
   const clearFields = () => {
+    setFirstName('')
+    setLastName('')
     setEmail('')
+    setPhoneNumber('')
     setPassword('')
+    setConfirmPassword('')
   }
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <Text style={styles.title}>Welcome Back!</Text>
+      <ScrollView>
+        <Text style={styles.title}>Join Us!</Text>
 
         <Text style={styles.description}>
-          Sign in to continue and access all your personalized features.
+          Sign up to rent out your car and start earning today.
         </Text>
 
         <TextInput
           style={styles.inputStyle}
-          placeholder="Enter Username"
-          textContentType="email"
+          placeholder="First Name"
+          value={firstName}
+          onChangeText={setFirstName}
+        />
+
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Last Name"
+          value={lastName}
+          onChangeText={setLastName}
+        />
+
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Email"
+          keyboardType="email-address"
           autoCapitalize="none"
-          returnKeyType="next"
           value={email}
           onChangeText={setEmail}
         />
 
         <TextInput
           style={styles.inputStyle}
-          placeholder="Enter Password"
-          textContentType="password"
-          autoCapitalize="none"
-          returnKeyType="done"
+          placeholder="Phone Number"
+          keyboardType="phone-pad"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+        />
+
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Password"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
         />
 
-        <Pressable style={styles.buttonStyle} onPress={onSignInClicked}>
-          <Text style={styles.buttonTextStyle}>Sign In</Text>
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Confirm Password"
+          secureTextEntry={true}
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+        />
+
+        <Pressable style={styles.buttonStyle} onPress={onSignUpClicked}>
+          <Text style={styles.buttonTextStyle}>Sign Up</Text>
         </Pressable>
       </ScrollView>
 
@@ -142,9 +198,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
     paddingHorizontal: 16,
-  },
-  scrollView: {
-    flex: 1,
   },
   title: {
     fontSize: 32,
@@ -181,6 +234,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
   },
+
   loadingOverlay: {
     position: 'absolute',
     left: 0,
@@ -206,4 +260,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default SignInScreen
+export default SignUpScreen
