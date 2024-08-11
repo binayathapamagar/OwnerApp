@@ -16,8 +16,8 @@ import FirebaseAuthController from '../../controllers/FirebaseAuthController'
 const SignInScreen = ({ navigation }) => {
   const firebaseAuthController = FirebaseAuthController.getInstance()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('test@gmail.com')
+  const [password, setPassword] = useState('test1234')
   const [loading, setLoading] = useState(false)
 
   const validateEmail = (email) => {
@@ -157,9 +157,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     paddingHorizontal: 16,
   },
+
   scrollView: {
     flex: 1,
   },
+
   title: {
     fontSize: 32,
     marginTop: 24,
@@ -167,11 +169,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: '#333',
   },
+
   description: {
     fontSize: 14,
     marginBottom: 16,
     color: '#666',
   },
+
   inputStyle: {
     height: 50,
     padding: 10,
@@ -182,6 +186,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#fff',
   },
+
   buttonStyle: {
     height: 50,
     marginVertical: 16,
@@ -190,11 +195,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
   },
+
   buttonTextStyle: {
     fontWeight: 'bold',
     color: 'white',
     fontSize: 18,
   },
+
   loadingOverlay: {
     position: 'absolute',
     left: 0,
@@ -205,6 +212,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
+
   loadingContainer: {
     width: 75,
     height: 75,
@@ -226,10 +234,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
+
   signUpText: {
     fontSize: 16,
     color: '#666',
   },
+  
   signUpButton: {
     fontSize: 16,
     color: '#333',

@@ -12,18 +12,24 @@ import {
 
 import Toast from 'react-native-toast-message'
 import FirebaseAuthController from '../../controllers/FirebaseAuthController'
+import FirestoreController from '../../controllers/FirestoreController'
+import { auth } from '../../config/FirebaseConfig'
 
 const SignUpScreen = ({ navigation }) => {
+  //Properties
   const firebaseAuthController = FirebaseAuthController.getInstance()
+  const firestoreController = FirestoreController.getInstance()
 
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  //Hooks
+  const [firstName, setFirstName] = useState('Test')
+  const [lastName, setLastName] = useState('User')
+  const [email, setEmail] = useState('test@gmail.com')
+  const [phoneNumber, setPhoneNumber] = useState('4375589642')
+  const [password, setPassword] = useState('test1234')
+  const [confirmPassword, setConfirmPassword] = useState('test1234')
   const [loading, setLoading] = useState(false)
 
+  //Functions
   const validateName = (name) => {
     return name.trim().length > 0
   }
@@ -58,18 +64,49 @@ const SignUpScreen = ({ navigation }) => {
     if (!result.success) {
       Alert.alert('Error', result.message)
     } else {
-      Toast.show({
-        type: 'success',
-        position: 'bottom',
-        text1: 'Success!',
-        text2: 'Signed up successfully.',
-        visibilityTime: 2000,
-        autoHide: true,
-        bottomOffset: 40,
-      })
-      navigation.goBack()
-      clearFields()
+      //Create a new user document in the firestore db
+      createUserInDB()
     }
+  }
+
+  const createUserInDB = async () => {
+    const user = auth.currentUser
+
+    const userObjForDB = {
+      uid: user.uid,
+      firstName: firstName,
+      lastName: lastName,
+      fullName: firstName + ' ' + lastName,
+      email: user.email,
+      phoneNumber: phoneNumber,
+      joinedDate: user.metadata.creationTime,
+      lastSignInTime: user.metadata.lastSignInTime,
+    }
+
+    const result = await firestoreController.saveUserInDB(
+      userObjForDB,
+      setLoading
+    )
+
+    if (!result.success) {
+      Alert.alert('Error', result.message)
+    } else {
+      userCreationSuccess()
+    }
+  }
+
+  const userCreationSuccess = () => {
+    Toast.show({
+      type: 'success',
+      position: 'bottom',
+      text1: 'Success!',
+      text2: 'Signed up successfully.',
+      visibilityTime: 2000,
+      autoHide: true,
+      bottomOffset: 40,
+    })
+    navigation.goBack()
+    clearFields()
   }
 
   const validateFields = () => {
@@ -120,6 +157,8 @@ const SignUpScreen = ({ navigation }) => {
     setPassword('')
     setConfirmPassword('')
   }
+
+  //Views
 
   return (
     <View style={styles.container}>
@@ -192,6 +231,8 @@ const SignUpScreen = ({ navigation }) => {
     </View>
   )
 }
+
+//Styles
 
 const styles = StyleSheet.create({
   container: {

@@ -26,8 +26,5 @@ const auth = getAuth(app)
 // Initialize Firebase Firestore obj and get a ref to the service
 const db = getFirestore(app)
 
-// Export the auth object to use in other files
-export { auth }
-
-// Export the firestore object to use in other files
-export { db }
+// Export the auth object and the firestore object to use in other files
+export { auth, db }
