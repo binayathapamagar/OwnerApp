@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import CreateListingScreen from './screens/CreateListingScreen'
-import ProfileScreen from './screens/ProfileScreen'
+import CreateListingScreen from './CreateListingScreen'
+import ProfileScreen from './ProfileScreen'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const Tab = createBottomTabNavigator()
@@ -24,6 +24,9 @@ const MainTabs = () => {
         },
         tabBarActiveTintColor: 'black',
         tabBarInactiveTintColor: 'black',
+        headerStyle: { backgroundColor: 'black' }, // Top navigation bar background color
+        headerTintColor: 'white', // Top navigation bar title color
+        headerTitleStyle: { fontWeight: 'bold' },
       })}
     >
       <Tab.Screen component={CreateListingScreen} name="Listings" />

@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Toast from 'react-native-toast-message'
 
-import MainTabs from './MainTabs'
+import MainTabs from './screens/MainTabs'
 import SignInScreen from './screens/Auth/SignInScreen'
 import SignUpScreen from './screens/Auth/SignUpScreen'
 
@@ -26,7 +26,7 @@ const App = () => {
         <Stack.Screen
           component={MainTabs}
           name="Main"
-          options={{ headerShown: false }}
+          options={{ headerShown: false }} //Hides the main tab nav bar.
         />
       </Stack.Navigator>
       <Toast ref={(ref) => Toast.setRef(ref)} />

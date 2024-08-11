@@ -46,7 +46,7 @@ const SignInScreen = ({ navigation }) => {
         position: 'bottom',
         text1: 'Login Successful!',
         text2: 'You have successfully logged in.',
-        visibilityTime: 3000,
+        visibilityTime: 2000,
         autoHide: true,
         bottomOffset: 40,
       })

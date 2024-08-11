@@ -63,7 +63,7 @@ const SignUpScreen = ({ navigation }) => {
         position: 'bottom',
         text1: 'Success!',
         text2: 'Signed up successfully.',
-        visibilityTime: 3000,
+        visibilityTime: 2000,
         autoHide: true,
         bottomOffset: 40,
       })
